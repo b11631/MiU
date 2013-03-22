@@ -1,0 +1,443 @@
+<!--
+Project 2 Gold
+MiU 1303
+Donald Moore
+3/21/2013
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- Meta Tags-->
+		<meta charset= "utf-8" />
+		<meta name="description" content="A web app used to create shopping list." />
+		<meta name="keywords" content="html5, mobile development, Full Sail University" />
+		<meta name="robots" content="index, follow" />
+		<meta name="robots" content="noindex, nofollow" />
+		
+		<!-- Page Title-->
+		<title>TKShopList</title>
+		
+		<!--  Mobile viewport optimized: j.mp/bplateviewport -->
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!-- Mobile IE needs ClearType for smoothing fonts -->
+		<meta http-equiv="cleartype" content="on">
+		
+		<!-- StyleSheets under here -->
+		<!-- <link href="css/style.css" rel="stylesheet" type="text/css" /> -->
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
+		
+		<!-- JavaScript is normally at the end of the body, except for Modernizr which enables HTML5 elements & feature detects -->
+		<script src="js/libs/modernizr.custom.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	</head>
+	<body>
+		<!-- Start of Home page -->
+		<div data-role="page" id="home">
+				<div data-role="header" data-position="fixed" >
+					<h1>TKShopList</h1>
+				</div><!-- /header -->
+				<div data-role="content">
+					<div id="image">
+						<a href="#addItem">
+							<center>
+								<img src="images/shop.jpg" alt="Shopping Cart" >
+							</center>
+								<a href="#addItem" data-role="button">
+									Create A ShopList
+								</a>
+						</a>
+					</div>
+					<div data-role="collapsible">
+						<h4>View Items By:</h4>
+						<ul data-role="listview" data-inset="true" data-filter="true">
+							<li><a href="#bygroup" id="gro">By Group</a></li>
+							<li><a href="#byitem" id="ite">By Item</a></li>
+							<li><a href="#bystore" id="sto">By Store</a></li>
+							<li><a href="#bydate" id="dat">By Date</a></li>
+							<li><a href="#byfavs" id="fav">By Favs</a></li>
+						</ul>
+					</div>
+				</div>
+		    <div data-role="footer" data-position="fixed">
+					<div data-role="navbar">
+						<ul>
+						<li><a href="#home" data-icon="home" class="ui-btn-active">Home</a></li>
+						<li><a href="">Bronze App</a></li>
+						<li><a href="#login">Login/Register</a></li>
+						<li><a href="#news">News</a></li>
+						<li><a href="#aboutus">AboutUs</a></li>
+						</ul>
+					</div><!-- /navbar -->
+				</div><!-- /footer -->
+		</div>
+		
+		<!-- Start of addItem page -->
+		<div data-role="page" id="addItem" data-add-back-btn="true">
+			<div data-role="header" data-position="fixed" >
+				<h1>TKShopList</h1>
+			</div><!-- /header -->
+			<div data-role="content">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#" id="clear">Clear List</a></li>
+						<li><a href="#" id="displayLink">Display List</a></li>
+						<li><a href="#addItem" id="addNew" style="display:none;">Add Item</a></li>
+					</ul>
+				</div>
+				
+				<form action="" method="post" id="itemForm">
+					<fieldset id="itemFieldSet">
+						<legend>ADD ITEMS</legend>
+						<span>* fields are required.</span>
+						<ul id="errors"></ul>
+						<ul id="questions">
+							<li><label for="group">*Item Group:</label>
+							<select name="group" id="group" data-native-menu="false" class="required">
+								<option data-placeholder="true">-- Choose Group --</option>
+								<option value="food">Food</option>
+								<option value="clothes">Clothes</option>
+								<option value="housewares">Housewares</option>
+								<option value="electronics">Electronics</option>
+							</select>
+							</li>
+							<li><label for="iname">*Item Name:</label><br><input type="text" id="iname" value="Item Name" class="required"/></li>
+							<li><label for="getByDate">Get By Date:</label><br><input type="date" id="getbydate" value="2013-06-01" class="required date"/></li>
+							<li id="location">Item Location:
+								<ul>
+									<li><input type="radio" name="location" value="Walmart" id="walmart" class="required"/><label for="walmart">Walmart</label></li>
+									<li><input type="radio" name="location" value="Albertsons" id="albertsons" /><label for="albertsons">Albertson's</label></li>
+									<li><input type="radio" name="location" value="Dillards" id="dillards" /><label for="dillards">Dillard's</label></li>
+									<li><input type="radio" name="location" value="KMart" id="kmart" /><label for="kmart">K-Mart</label></li>
+									<li><input type="radio" name="location" value="Bealls" id="bealls" /><label for="bealls">Beall's</label></li>
+									<li><input type="radio" name="location" value="Kohls" id="kohls" /><label for="kohls">Kohl's</label></li>
+									<li><input type="radio" name="location" value="BestBuy" id="bestbuy" /><label for="bestbuy">Best Buy</label></li>
+									<li><input type="radio" name="location" value="Other" id="other" /><label for="other">Other</label></li>
+								</ul>
+							</li>
+							<li><label for="range">Amount Needed:</label><input type="range" id="range" min="0" max="10" value="1" /></li>
+							<li><input type="checkbox" value="no" id="fav" /><label for="fav">Save To Favorites:</label></li>
+							<li><label for="notes">Additional Information:</label><textarea id="notes"></textarea></li>
+						</ul>
+					</fieldset>
+					<input type="reset" value="RESET" data-theme="a" />
+					<input type="submit" value="ADD ITEM" data-theme="b"/>
+				</form>
+			</div>
+			<div data-role="footer" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#home" data-icon="home">Home</a></li>
+						<li><a href="">Bronze App</a></li>
+						<li><a href="#login">Login/Register</a></li>
+						<li><a href="#news">News</a></li>
+						<li><a href="#aboutus">AboutUs</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+		</div>
+		<!-- Start of Display Items page -->
+		<div data-role="page" id="display" data-add-back-btn="true">
+			<div data-role="header" data-position="fixed">
+				
+			</div>
+			<div data-role="content">
+				
+			</div>
+			<div data-role="footer" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#home" data-icon="home">Home</a></li>
+						<li><a href="">Bronze App</a></li>
+						<li><a href="#login">Login/Register</a></li>
+						<li><a href="#news">News</a></li>
+						<li><a href="#aboutus">AboutUs</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+		</div>
+		<!-- Start of About page -->
+		<div data-role="page" id="aboutus" data-add-back-btn="true">
+			<div data-role="header" data-position="fixed">
+				<h1>TKShopList</h1>
+			</div><!-- /header -->
+			
+			<div data-role="content">
+				<div data-role="collapsible-set" data-inset="false">
+	
+					<div data-role="collapsible" data-collapsed="false">
+						<h3>About TK Apps</h3>
+						<p>TK Apps is a new up and coming application development firm based out of Texarkana, Tx. We offer services in the following technologies:<br>
+							<br>Websites Desktop/Mobile<br>
+							<br>Mobile Web Apps<br>
+							<br>Native iOS Apps<br>
+							<br>Native Android Apps<br>
+							<br>Cross Platform Development<br>
+							<br>And much more ... 
+						</p>
+					</div>
+					<div data-role="collapsible">
+						<h3>Contact Us</h3>
+						<p>E-Mail: sacrushalot@gmail.com</p>
+						<p>Phone: 999-999-9999</p>
+					</div>
+				</div>
+			</div>
+			
+			<div data-role="footer" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#home" data-icon="home">Home</a></li>
+						<li><a href="">Bronze App</a></li>
+						<li><a href="#login">Login/Register</a></li>
+						<li><a href="#news">News</a></li>
+						<li><a href="#aboutus" class="ui-btn-active">AboutUs</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+		</div>
+		
+		<!-- Start of Login/Register page -->
+		<div data-role="page" id="login" data-add-back-btn="true">
+		    <div data-role="header" data-position="fixed">
+				<h1>TKShopList</h1>
+		    </div>
+			<div data-role="content">
+				<h3>Comming Soon!</h3>
+				<div data-role="collapsible-set" data-inset="false">
+					<div data-role="collapsible" data-collapsed="false">
+					<h3>Login</h3>
+						<form method="post" id="login">
+							<ul data-role="listview" data-inset="true">
+								<li data-role="fieldcontain">
+									<label for="username">Username:</label>
+									<input type="text" name="username" id="username" value=""  disabled="disabled"/>
+								</li>
+								<li data-role="fieldcontain">
+									<label for="password">Password:</label>
+									<input type="password" name="password" id="password" value="" disabled="disabled"/>
+								</li>
+								<li>
+									<input id="Submit" type="submit" value="Login" data-role="button" disabled="disabled"/>
+								</li>
+							</ul>
+						</form>
+					</div>
+					<div data-role="collapsible">
+						<h3>Register</h3>
+						<form method="post" id="register" enctype="text/plain" >
+							<ul data-role="listview" data-inset="true">
+								<li data-role="fieldcontain">
+									<label for="name">Name:</label>
+									<input type="text" name="name" id="name" disabled="disabled"/>
+								</li>
+								<li data-role="fieldcontain">
+									<label for="email">Email:</label>
+									<input type="text" name="email" id="email" disabled="disabled"/>
+								</li>
+								<li data-role="fieldcontain">
+									<label for="address1">Address 1:</label>
+									<input type="text" name="address1" id="address1" disabled="disabled"/>
+								</li>
+								<li data-role="fieldcontain">
+									<label for="address2">Address 2:</label>
+									<input type="text" name="address2" id="address2" disabled="disabled"/>
+								</li>
+								<li data-role="fieldcontain">
+									<label for="city">City:</label>
+									<input type="text" name="city" id="city" disabled="disabled"/>
+								</li>
+								<li data-role="fieldcontain">
+									<label for="state">State:</label>
+									<input type="text" name="state" id="state" disabled="disabled" />
+								</li>
+								<li data-role="fieldcontain">
+									<label for="zip">Zip Code:</label>
+									<input type="text" name="zip" id="zip" disabled="disabled"/>
+								</li>
+								<li class="ui-body ">
+									<fieldset class="ui-grid-a">
+										<div class="ui-block-a">
+											<input type="submit" value="Send" disabled="disabled"/>
+										</div>
+										<div class="ui-block-b">
+											<input type="reset" value="Reset" disabled="disabled"/>
+										</div>
+									</fieldset>
+								</li>
+							</ul>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+		    <div data-role="footer" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#home" data-icon="home">Home</a></li>
+						<li><a href="">Bronze App</a></li>
+						<li><a href="#login" class="ui-btn-active">Login/Register</a></li>
+						<li><a href="#news">News</a></li>
+						<li><a href="#aboutus">AboutUs</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+		</div>
+		<!-- Start of By News page -->
+		<div data-role="page" id="news" data-add-back-btn="true">
+			<div data-role="header" data-position="fixed">
+				<h1>TKShopList</h1>
+			</div>
+			<div data-role="content">
+				<h3>News</h3>
+				<ul data-role="listview" data-inset="true">
+					<li><a href="#">
+					    <img src="images/Food.png">
+					    <h2>Food News</h2>
+					    <p>Summer is here which means BBQ!.</p></a>
+					</li>
+					<li><a href="#">
+					    <img src="images/Clothes.png">
+					    <h2>Clothing News</h2>
+					    <p>1/2 Price on shorts for the summer</p></a>
+					</li>
+					<li><a href="#">
+					    <img src="images/Housewares.png">
+					    <h2>House News</h2>
+					    <p>Box fans 3 for the price of 2</p></a>
+					</li>
+					<li><a href="#">
+					    <img src="images/Electronics.png">
+					    <h2>Electronics News</h2>
+					    <p>Playstation 4 prices released!</p></a>
+					</li>
+				    </ul>
+				
+			</div>
+			<div data-role="footer" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#home" data-icon="home">Home</a></li>
+						<li><a href="">Bronze App</a></li>
+						<li><a href="#login">Login/Register</a></li>
+						<li><a href="#news" class="ui-btn-active">News</a></li>
+						<li><a href="#aboutus">AboutUs</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+		</div>
+		<!-- Start of By Group page -->
+		<div data-role="page" id="bygroup" data-add-back-btn="true">
+			<div data-role="header" data-position="fixed">
+				<h1>TKShopList</h1>
+			</div><!-- /header -->
+			<div data-role="content">
+				<h3>Comming Soon!</h3>
+				<div id="itemDetails">
+					
+				</div>
+			</div>
+			
+			<div data-role="footer" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#home" data-icon="home">Home</a></li>
+						<li><a href="">Bronze App</a></li>
+						<li><a href="#login">Login/Register</a></li>
+						<li><a href="#news">News</a></li>
+						<li><a href="#aboutus">AboutUs</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+		</div>
+		<!-- Start of By Item page -->
+		<div data-role="page" id="byitem" data-add-back-btn="true">
+			<div data-role="header" data-position="fixed">
+				<h1>TKShopList</h1>
+			</div><!-- /header -->
+			<div data-role="content">
+				<h3>Comming Soon!</h3>
+			</div>
+			<div data-role="footer" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#home" data-icon="home">Home</a></li>
+						<li><a href="">Bronze App</a></li>
+						<li><a href="#login">Login/Register</a></li>
+						<li><a href="#news">News</a></li>
+						<li><a href="#aboutus">AboutUs</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+		</div>
+		<!-- Start of By Store page -->
+		<div data-role="page" id="bystore" data-add-back-btn="true">
+			<div data-role="header" data-position="fixed">
+				<h1>TKShopList</h1>
+			</div><!-- /header -->
+			<div data-role="content">
+				<h3>Comming Soon!</h3>
+			</div>
+			<div data-role="footer" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#home" data-icon="home">Home</a></li>
+						<li><a href="">Bronze App</a></li>
+						<li><a href="#login">Login/Register</a></li>
+						<li><a href="#news">News</a></li>
+						<li><a href="#aboutus">AboutUs</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+		</div>
+		<!-- Start of By Date page -->
+		<div data-role="page" id="bydate" data-add-back-btn="true">
+			<div data-role="header" data-position="fixed">
+				<h1>TKShopList</h1>
+			</div><!-- /header -->
+			<div data-role="content">
+				<h3>Comming Soon!</h3>
+			</div>
+			<div data-role="footer" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#home" data-icon="home">Home</a></li>
+						<li><a href="">Bronze App</a></li>
+						<li><a href="#login">Login/Register</a></li>
+						<li><a href="#news">News</a></li>
+						<li><a href="#aboutus">AboutUs</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+		</div>
+		<!-- Start of By favs page -->
+		<div data-role="page" id="byfavs" data-add-back-btn="true">
+			<div data-role="header" data-position="fixed">
+				<h1>TKShopList</h1>
+			</div><!-- /header -->
+			<div data-role="content">
+				<h3>Comming Soon!</h3>
+			</div>
+			<div data-role="footer" data-position="fixed">
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#home" data-icon="home">Home</a></li>
+						<li><a href="">Bronze App</a></li>
+						<li><a href="#login">Login/Register</a></li>
+						<li><a href="#news">News</a></li>
+						<li><a href="#aboutus">AboutUs</a></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!-- /footer -->
+		</div>
+		
+		<!-- Javascript-->
+		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
+		<script type="text/javascript" src="js/libs/jquery.validate.min.js"></script>
+		<script src="js/json.js" type="text/javascript"></script>
+		<script src="js/main.js" type="text/javascript"></script>
+	</body> 
+</html>
