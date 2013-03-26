@@ -1,5 +1,5 @@
 window.addEventListener("DOMContentLoaded", function(){
-
+        
 	function $(x){
       var theElement = document.getElementById(x);
       return theElement;
@@ -143,28 +143,14 @@ window.addEventListener("DOMContentLoaded", function(){
     function editItem(){
 	    //grab the data from our local Storage.
 	    var value = localStorage.getItem(this.key);
-	    var item =JSON.parse(value);
+	    var item = JSON.parse(value);
 	    
 	    //show the form
 	    toggleControls("off");
-	    
-	    $("select").value = item.group[1];
+	    //populate for fields with current storage values
+	    $("group").value = item.group[1];
 	    $("iname").value = item.iname[1];
 	    $("getbydate").value = item.getbydate[1];
-	    $("location").value = item.location[1];
-	    $("range").value = item.range[1];
-	    $("fav").value = item.fav[1];
-	    $("notes").value = item.notes[1];
-	    $("comments").value = item.comments[1];
-	    var checkbox = document.forms[0].fav;
-	    for(var i=0; i<checkbox.length; i++){
-    	   if(checkbox[i].value == "yes" && item.fav[1] == "yes"){
-        	   checkbox[i].setAttribute("checked","checked");
-           }else if(checkbox[i].value == "no" && item.fav[1] == "no"){
-               checkbox[i].setAttribute("checked","checked");
-           }
-	    
-	    }
 	    var radio = document.forms[0].location;
 	    for(var i=0; i<radio.length; i++){   
             if(radio[i].value == "walmart" && item.location[1] == "walmart"){
@@ -175,7 +161,12 @@ window.addEventListener("DOMContentLoaded", function(){
             radio[i].setAttribute("checked","checked");
            }
         }
-             
+	    $("range").value = item.range[1];
+	    if(item.fav[1] == "Yes"){
+		$("fav").setAttribute("checked", "checked");
+	    }
+	    $("notes").value = item.notes[1];
+
         //Remove the initial listener from the input "save contact" button.
         submit.removeEventListener("click", storeData);
         //Change submit button value to edit button
@@ -252,7 +243,7 @@ window.addEventListener("DOMContentLoaded", function(){
        }       
    }
 
-	//get the right images for each item in our data 
+		//get the right images for each item in our data 
 	function getImage(imgName, makeSubList){
 		var imageLi = document.createElement("li");
 		makeSubList.appendChild(imageLi);
@@ -267,7 +258,6 @@ window.addEventListener("DOMContentLoaded", function(){
 			localStorage.setItem(id, JSON.stringify(json[n]));
 		}
 	}
-	
 	var itemGroups = ["--Choose A Group--", "Food", "Clothes", "Housewares", "Electronics"],
 		favoriteValue = "No",
 		locationValue, 
@@ -282,4 +272,4 @@ window.addEventListener("DOMContentLoaded", function(){
 	clear.addEventListener("click", clearLocal);
 	var submit = $("submit");
 	submit.addEventListener("click", validate);
-}); 
+});

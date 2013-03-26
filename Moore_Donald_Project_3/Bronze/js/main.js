@@ -1,11 +1,3 @@
-//Donald Moore
-//Visual Framework 1302
-//Project 3 Javascript
-//2-118-13
-
-
-
-
 window.addEventListener("DOMContentLoaded", function(){
         
 	function $(x){
@@ -94,38 +86,26 @@ window.addEventListener("DOMContentLoaded", function(){
 	function getData(){
        toggleControls("on");
        if(localStorage.length === 0){
-           alert("Got to add a Item First!!! Default JSON data added!");
+           alert("There is no data in local storage. Default JSON data added!");
 		   autoFillData(); //Populates JSON Data
        }
        
-      var makeDiv = document.createElement("div");
+       var makeDiv = document.createElement("div");
        makeDiv.setAttribute("id", "items");
-	 
-       /*var makeList = document.createElement("ul");
-       makeDiv.appendChild(makeList);*/
+       var makeList = document.createElement("ul");
+       makeDiv.appendChild(makeList);
        document.body.appendChild(makeDiv);
-       /*$("items").style.display = "block";*/
-	   $("items").innerHTML = "";
+       $("items").style.display = "block";
        for(var i=0, len=localStorage.length; i<len; i++){
-           /*var makeLi = document.createElement("li");*/
+           var makeLi = document.createElement("li");
            var linksLi = document.createElement("li");
-           /*makeList.appendChild(makeLi);*/
+           makeList.appendChild(makeLi);
            var key = localStorage.key(i);
            var value = localStorage.getItem(key);
-		   //connecting string in localstorage to an object
            var obj = JSON.parse(value);
-		   
-           var newItem = document.createElement("div");
-           makeDiv.appendChild(newItem);
-		   newItem.setAttribute("class", "newItem");
-		   getImage(obj.group[1],newItem);
-		   var itemSpecs = document.createElement("div");
-		   newItem.appendChild(itemSpecs);
-		   itemSpecs.setAttribute("class", "itemSpecs");
-		   
-		   var makeSubList = document.createElement("ul");
-		   itemSpecs.appendChild(makeSubList);
-		   
+           var makeSubList = document.createElement("ul");
+           makeLi.appendChild(makeSubList);
+		   getImage(obj.group[1],makeSubList);
            for(var n in obj){
                var makeSubLi = document.createElement("li");
                makeSubList.appendChild(makeSubLi);
@@ -163,27 +143,14 @@ window.addEventListener("DOMContentLoaded", function(){
     function editItem(){
 	    //grab the data from our local Storage.
 	    var value = localStorage.getItem(this.key);
-	    var item =JSON.parse(value);
+	    var item = JSON.parse(value);
 	    
 	    //show the form
 	    toggleControls("off");
-	    
+	    //populate for fields with current storage values
 	    $("group").value = item.group[1];
 	    $("iname").value = item.iname[1];
 	    $("getbydate").value = item.getbydate[1];
-	    $("location").value = item.location[1];
-	    $("range").value = item.range[1];
-	    $("fav").value = item.fav[1];
-	    $("notes").value = item.notes[1];
-	    var checkbox = document.forms[0].fav;
-	    for(var i=0; i<checkbox.length; i++){
-    	   if(checkbox[i].value == "yes" && item.fav[1] == "yes"){
-        	   checkbox[i].setAttribute("checked","checked");
-           }else if(checkbox[i].value == "no" && item.fav[1] == "no"){
-               checkbox[i].setAttribute("checked","checked");
-           }
-	    
-	    }
 	    var radio = document.forms[0].location;
 	    for(var i=0; i<radio.length; i++){   
             if(radio[i].value == "walmart" && item.location[1] == "walmart"){
@@ -194,9 +161,14 @@ window.addEventListener("DOMContentLoaded", function(){
             radio[i].setAttribute("checked","checked");
            }
         }
-             
+	    $("range").value = item.range[1];
+	    if(item.fav[1] == "Yes"){
+		$("fav").setAttribute("checked", "checked");
+	    }
+	    $("notes").value = item.notes[1];
+
         //Remove the initial listener from the input "save contact" button.
-        saveItem.removeEventListener("click", storeData);
+        submit.removeEventListener("click", storeData);
         //Change submit button value to edit button
         $("submit").value = "Edit Item";
         var editSubmit = $("submit");
@@ -286,8 +258,6 @@ window.addEventListener("DOMContentLoaded", function(){
 			localStorage.setItem(id, JSON.stringify(json[n]));
 		}
 	}
-
-	
 	var itemGroups = ["--Choose A Group--", "Food", "Clothes", "Housewares", "Electronics"],
 		favoriteValue = "No",
 		locationValue, 
@@ -300,6 +270,6 @@ window.addEventListener("DOMContentLoaded", function(){
 	displayLink.addEventListener("click", getData);
 	var clear = $("clear");
 	clear.addEventListener("click", clearLocal);
-	var saveItem = $("submit");
-	saveItem.addEventListener("click", validate);
-}); 
+	var submit = $("submit");
+	submit.addEventListener("click", validate);
+});

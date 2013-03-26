@@ -29,10 +29,21 @@ $(document).ready(function(){
 	})
 	
 })
+$("#addItem").on("pageinit", function(){
+	var myForm = $("#itemForm");
+	myForm.validate({
+		invalidHandler: function(form, validator) {
+		},
+		submitHandler: function(){
+			var data = myForm.serializeArray();
+			saveData(key);
+		}
+	})
+})
 
 
-
-/*window.addEventListener("DOMContentLoaded", function(){
+/*
+window.addEventListener("DOMContentLoaded", function(){
         
 	function $(x){
       var theElement = document.getElementById(x);
@@ -329,4 +340,4 @@ $(document).ready(function(){
 	var saveItem = $("submit");
 	saveItem.addEventListener("click", validate);
 });
-*/ 
+*/
